@@ -1,18 +1,33 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UnitWorldUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private TextMeshProUGUI unitName;
+    [SerializeField] private Unit unit;
+    [SerializeField] private UnitHealth unitHealth;
+    [SerializeField]private Image healthBar;
+
+    private void Start()
     {
+        unitHealth.OnDamaged += UnitHealth_OnDamaged;
         
+        unitName.text = unit.name;
+        UpdateHealthBar();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void UnitHealth_OnDamaged(object sender, EventArgs e)
     {
-        
+        UpdateHealthBar();
+    }
+
+
+    private void UpdateHealthBar()
+    {
+        healthBar.fillAmount = unitHealth.GetHealthNormalized();
     }
 }

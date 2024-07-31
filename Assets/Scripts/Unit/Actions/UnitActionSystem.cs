@@ -12,7 +12,7 @@ public class UnitActionSystem : MonoBehaviour
 
     public event EventHandler OnSelectedUnitChanged;
     public event EventHandler OnSelectedActionChanged;
-    public event EventHandler<bool> OnBusyChanged;
+    //public event EventHandler<bool> OnBusyChanged;
     public event EventHandler OnActionStarted;
     
     
@@ -127,7 +127,7 @@ public class UnitActionSystem : MonoBehaviour
         
         
         
-        if (InputManager.Instance.IsMouseButtonDownThisFrame())
+        if (InputManager.Instance.IsMouse1ButtonDownThisFrame())
         {
             // if (!selectedUnit.TrySpendActionPointsToTakeAction(selectedAction))
             // {

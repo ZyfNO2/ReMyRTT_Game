@@ -2626,11 +2626,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Unit
       objectReference: {fileID: 0}
-    - target: {fileID: 8548647118438922037, guid: 9789b94ada94d33479eddb21ad3005ea,
-        type: 3}
-      propertyPath: maxMoveDistance
-      value: 5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
