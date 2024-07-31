@@ -1,0 +1,82 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GridObject
+{
+    private GridSystem gridSystem;
+    private GridPosition gridPosition;
+    private Unit unit;
+    private List<Unit> unitList;
+    //private IInteractable interactable;
+
+    public GridObject(GridSystem gridSystem, GridPosition gridPosition)
+    {
+        this.gridPosition = gridPosition;
+        this.gridSystem = gridSystem;
+        unitList = new List<Unit>();
+    }
+
+    public override string ToString()
+    {
+        string unitString = "";
+        foreach (var unit in unitList)
+        {
+            //Debug.Log("111");
+            unitString += unit + "\n";
+        }
+        //Debug.Log(unitString);
+        
+        return gridPosition.ToString() + "\n" + unitString;
+        
+    }
+
+
+    public void AddUnit(Unit unit)
+    {
+        unitList.Add(unit);
+    }
+    
+    public void RemoveUnit(Unit unit)
+    {
+        unitList.Remove(unit);
+    }
+    
+    
+    public List<Unit> GetUnitList()
+    {
+        return unitList;
+    }
+    
+    public bool HasAnyUnit()
+    {
+        return unitList.Count > 0;
+    }
+    
+    public Unit GetUnit()
+    {
+        if (HasAnyUnit())
+        {
+            return unitList[0];
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    
+    // public IInteractable GetInteractable()
+    // {
+    //     return interactable;
+    // }
+    //
+    // public void SetInteractable(IInteractable interactable)
+    // {
+    //     this.interactable = interactable;
+    // }
+    //
+
+
+
+}
