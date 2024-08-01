@@ -259,6 +259,7 @@ GameObject:
   - component: {fileID: 9195923532599447538}
   - component: {fileID: 4576670552976166614}
   - component: {fileID: 3520551463880173451}
+  - component: {fileID: 4287461862979935524}
   m_Layer: 7
   m_Name: UnitWorldUI
   m_TagString: Untagged
@@ -366,6 +367,19 @@ MonoBehaviour:
   unit: {fileID: 2242834924364214285}
   unitHealth: {fileID: 7454074675150046943}
   healthBar: {fileID: 4657296830997342964}
+--- !u!114 &4287461862979935524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756340607467649697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8394f8c9ec99a245b4d565d164874ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  invert: 1
 --- !u!1 &3364248814529218168
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,6 +610,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 5034734637112122914}
   isSelected: 0
+  isEnemy: 0
   actionPoints: 9
 --- !u!114 &8548647118438922037
 MonoBehaviour:
@@ -635,6 +650,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDamageDistance: 3
+  state: 0
+  stateTimer: 0
+  targetUnit: []
+  canDamage: 0
 --- !u!114 &741707413550540627
 MonoBehaviour:
   m_ObjectHideFlags: 0

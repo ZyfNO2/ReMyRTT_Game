@@ -54,6 +54,11 @@ public class GridVisual : MonoBehaviour
         HideAllGridPosition();
         
         Unit selectedUnit = UnitActionSystem.Instance.GetSelectedUnit();
+
+        if (selectedUnit == null)
+        {
+            return;
+        }
         
         BaseAction selectedAction = UnitActionSystem.Instance.GetSelectedAction();
 

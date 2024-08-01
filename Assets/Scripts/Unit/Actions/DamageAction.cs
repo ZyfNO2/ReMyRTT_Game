@@ -1,12 +1,20 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DamageAction : BaseAction
 {
-    [SerializeField] private  int maxDamageDistance = 1;
- 
+    public enum State
+    {
+        Prepare,
+        Damage,
+        CoolOff,
+    
+    }
+    
+    
+    [SerializeField] private  int maxDamageDistance = 3;
+    [SerializeField]private State state;
     public static event EventHandler<OnDamageEventArgs> OnAnyDamage;
     public event EventHandler<OnDamageEventArgs> OnDamage;
     
@@ -17,18 +25,18 @@ public class DamageAction : BaseAction
 
     }
     
-    private float stateTimer;
-    private List<Unit> targetUnit;
-    private bool canDamage;//mark the state of damage
+    [SerializeField]public float stateTimer;
+    [SerializeField]private List<Unit> targetUnit;
+    [SerializeField]private bool canDamage;//mark the state of damage
     
     
 
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
         targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
-        
-        float aimingStateTime = 1f;
-        stateTimer = aimingStateTime;
+        state = State.Prepare;
+        float coolDownStateTime = .5f;
+        stateTimer = coolDownStateTime;
 
         canDamage = true;
         
@@ -39,19 +47,71 @@ public class DamageAction : BaseAction
 
     private void Update()
     {
+        //Debug.Log(canDamage);
+        
         if (!isActive)
         {
             return;
         }
         
         stateTimer -= Time.deltaTime;
+
+        switch (state)
+        {
+            case State.Prepare:
+                Vector3 aimDir = (targetUnit[0].GetWorldPosition() - unit.GetWorldPosition()).normalized;
+                float rotateSpeed = 10f;
+                
+                transform.forward = Vector3.Lerp(transform.forward,aimDir, 
+                    Time.deltaTime * rotateSpeed);
+                break;
+            
+            case State.Damage:
+                
+                if (canDamage)
+                {
+                    Damage();
+                    canDamage = false;
+                }
+                break;
+            case State.CoolOff:
+                break;
+            
+        }
         
-        Damage();
         
-        ActionComplete();
+        if (stateTimer <= 0f)
+        {
+            NextState();
+        }
+        
+        
         
     }
 
+    private void NextState()
+    {
+        switch (state)
+        {
+            case State.Prepare:
+                state = State.Damage;
+                float prepareStateTime = .1f;
+                stateTimer = prepareStateTime;
+                break;
+            
+            case State.Damage:
+                state = State.CoolOff;
+                float coolOffStateTime = .5f;
+                stateTimer = coolOffStateTime;
+                break;
+            
+            case State.CoolOff:
+                ActionComplete();
+                break;
+        }
+    }
+    
+    
     private void Damage()
     {
         OnAnyDamage?.Invoke(this,new OnDamageEventArgs
@@ -67,7 +127,7 @@ public class DamageAction : BaseAction
         });
         
         
-        Debug.Log(targetUnit[0]);
+        //Debug.Log(targetUnit[0]);
         targetUnit[0].Damage(90);
         
     }
@@ -75,6 +135,7 @@ public class DamageAction : BaseAction
 
     public override List<GridPosition> GetValidActionGridPositionList()
     {
+        
         List<GridPosition> validGridPositionList = new List<GridPosition>();
         GridPosition unitGridPosition = unit.GetGridPosition();
 
@@ -85,28 +146,42 @@ public class DamageAction : BaseAction
                 GridPosition offsetGridPosition =  new GridPosition(x, z);
                 GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
 
+                
+                
                 if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
                 {
                     continue;
                 }
+
+                
+                
 
                 if (LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition).Count == 0)
                 {
                     continue;
                 }
                 
-                if (testGridPosition == unit.GetGridPosition())
+                List<Unit> unitList = LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition);
+                bool isGetTatger = false;
+                foreach (Unit unitDamaged in unitList)
+                {
+                    if (unitDamaged.IsEnemy() != unit.IsEnemy())
+                    {
+                        isGetTatger = true;
+                    }
+                }
+
+                if (!isGetTatger)
                 {
                     continue;
                 }
                 
                 
-                // if ((Mathf.Abs(x) + Mathf.Abs(z)) > maxDamageDistance)
-                // {
-                //     continue;
-                // }
                 
-                
+                if (testGridPosition == unit.GetGridPosition())
+                {
+                    continue;
+                }
                 
                 validGridPositionList.Add(testGridPosition);
                 //Debug.Log(testGridPosition);
@@ -117,6 +192,8 @@ public class DamageAction : BaseAction
         return validGridPositionList;
 
     }
+    
+    
     
     
     
@@ -134,8 +211,11 @@ public class DamageAction : BaseAction
     {
         return maxDamageDistance;
     }
-    
-    
+
+    public State GetState()
+    {
+        return state;
+    }
     
     
     

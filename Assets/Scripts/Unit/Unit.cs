@@ -10,11 +10,13 @@ public class Unit : MonoBehaviour
     
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField]private bool isSelected;
+    [SerializeField] private bool isEnemy = false;
     [SerializeField]private int actionPoints = 9;
     
     private BaseAction[] baseActionArray;
     private GridPosition gridPosition;
     private UnitHealth unitHealth;
+    
     
     private void Awake()
     {
@@ -142,9 +144,23 @@ public class Unit : MonoBehaviour
         unitHealth.Damage(damageAmount);
     }
 
+    public bool IsEnemy()
+    {
+        return isEnemy;
+    }
+    
+    
+    
 
     private void OnDestroy()
     {
         unitHealth.OnDead -= HealthSystem_OnDead;
     }
+    
+    
+    
+    
+    
+    
+    
 }
