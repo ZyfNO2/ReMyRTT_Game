@@ -37,7 +37,20 @@ public class MoveAction : BaseAction
         //     positionList.Add(LevelGrid.Instance.GetWorldPosition(pathGridPosition));
         // }
 
-        targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+        //targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+        
+        List<GridPosition> pathGridPositionList = 
+            PathFindingManager.Instance.FindPath(unit.GetGridPosition(), 
+                gridPosition,out int pathLength);
+        
+        currentPositionIndex = 0;
+        positionList = new List<Vector3>();
+
+        foreach (GridPosition pathGridPosition in pathGridPositionList)
+        {
+            positionList.
+                Add(LevelGrid.Instance.GetWorldPosition(pathGridPosition));
+        }
         
         OnStartMoving?.Invoke(this,EventArgs.Empty);
        
@@ -50,35 +63,30 @@ public class MoveAction : BaseAction
         {
             return;
         }
-        //Debug.Log("1111");
-        //Vector3 targetPosition = positionList[currentPositionIndex];
+
+        Vector3 targetPosition = positionList[currentPositionIndex];
         Vector3 moveDirection = (targetPosition - transform.position).normalized;
         
         transform.forward = Vector3.Lerp
             (transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
-
+        
+        
         if (Vector3.Distance(transform.position, targetPosition) > stoppingDistance)
         {
             transform.position += moveDirection * (moveSpeed * Time.deltaTime);
-            //ActionComplete();
+            
         }
         else
         {
-            OnStopMoving?.Invoke(this,EventArgs.Empty);
-            ActionComplete();
+            currentPositionIndex++;
+            if (currentPositionIndex >= positionList.Count)
+            {
+                OnStopMoving?.Invoke(this,EventArgs.Empty);
+                
+                ActionComplete();
+            }
+            
         }
-        // else
-        // {
-        //     currentPositionIndex++;
-        //     
-        //     if (currentPositionIndex >= positionList.Count)
-        //     {
-        //         OnStopMoving?.Invoke(this,EventArgs.Empty);
-        //         ActionComplete();
-        //         
-        //     }
-        //     
-        // }
         
         
         

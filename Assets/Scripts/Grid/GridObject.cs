@@ -8,6 +8,8 @@ public class GridObject
     private GridPosition gridPosition;
     private Unit unit;
     private List<Unit> unitList;
+
+    private PathNode pathNode;// for pathfinding
     //private IInteractable interactable;
 
     public GridObject(GridSystem gridSystem, GridPosition gridPosition)
@@ -15,6 +17,7 @@ public class GridObject
         this.gridPosition = gridPosition;
         this.gridSystem = gridSystem;
         unitList = new List<Unit>();
+        this.pathNode = new PathNode(gridPosition);
     }
 
     public override string ToString()
@@ -64,7 +67,11 @@ public class GridObject
             return null;
         }
     }
-    
+
+    public PathNode GetPathNode()
+    {
+        return pathNode;
+    }
     
     // public IInteractable GetInteractable()
     // {

@@ -40,6 +40,12 @@ public class LevelGrid : MonoBehaviour
         
     }
 
+    private void Start()
+    {
+        PathFindingManager.Instance.SetUp(width,height,cellSize);
+    }
+
+
     public void UnitMovePosition(Unit unit, GridPosition fromGridPosition, GridPosition toGridPosition)
     {
         RemoveUnitAtPosition(fromGridPosition,unit);
@@ -86,5 +92,10 @@ public class LevelGrid : MonoBehaviour
     
     public int GetWidth() => gridSystem.GetWidth();
     public int GetHeight() => gridSystem.GetHeight();
+
+    public GridSystem GetGridSystem()
+    {
+        return gridSystem;
+    }
     
 }
