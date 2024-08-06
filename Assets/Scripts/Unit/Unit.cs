@@ -13,7 +13,7 @@ public class Unit : MonoBehaviour
     [SerializeField] private bool isEnemy = false;
     [SerializeField]private int actionPoints = 9;
     
-    private BaseAction[] baseActionArray;
+    
     private GridPosition gridPosition;
     private UnitHealth unitHealth;
     
@@ -22,7 +22,7 @@ public class Unit : MonoBehaviour
     {
         unitHealth = GetComponent<UnitHealth>();
         //Debug.Log(baseActionArray);
-        baseActionArray = GetComponents<BaseAction>();
+     
     }
 
     private void Start()
@@ -51,39 +51,6 @@ public class Unit : MonoBehaviour
         }
     }
     
-    public bool TrySpendActionPointsToTakeAction(BaseAction baseAction)
-    {
-        
-        if (CanSpendActionPointToTakeAction(baseAction))
-        {
-            SpendActionPoint(baseAction.GetActionPointsCost());
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
-    private void SpendActionPoint(int amount)
-    {
-        actionPoints -= amount;
-        
-        OnAnyActionPointsChanged?.Invoke(this,EventArgs.Empty);
-    }
-    
-    public bool CanSpendActionPointToTakeAction(BaseAction baseAction)
-    {
-        if (actionPoints >= baseAction.GetActionPointsCost())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
     
     public GridPosition GetGridPosition()
     {
@@ -95,18 +62,7 @@ public class Unit : MonoBehaviour
         return actionPoints;
     }
     
-    public T GetAction<T>() where T: BaseAction
-    {
-        foreach (BaseAction baseAction in baseActionArray)
-        {
-            if (baseAction is T)
-            {
-                return (T)baseAction;
-            }
-        }
 
-        return null;
-    }
     
 
     public bool IsSelected()
@@ -119,10 +75,7 @@ public class Unit : MonoBehaviour
         this.isSelected = isSelected;
     }
     
-    public BaseAction[] GetBaseActionArray()
-    {
-        return baseActionArray;
-    }
+
     
     public Vector3 GetWorldPosition()
     {

@@ -6,12 +6,12 @@ using UnityEngine.InputSystem;
 
 public class Testing : MonoBehaviour
 {
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            //Debug.Log(LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition()));
-            Debug.Log(UnitActionSystem.Instance.GetSelectedUnit());
-        }
-    }
+    // private void Update()
+    // {
+    //     if (Input.GetKeyDown(KeyCode.T))
+    //     {
+    //         //Debug.Log(LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition()));
+    //         Debug.Log(UnitActionSystem.Instance.GetSelectedUnit());
+    //     }
+    // }
 }

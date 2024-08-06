@@ -29,6 +29,7 @@ public class PathFindingManager : MonoBehaviour
     private void Start()
     {
         gridSystem = LevelGrid.Instance.GetGridSystem();
+        Debug.Log(gridSystem.GetWidth());
     }
 
     public void SetUp(int width,int height,float cellSize)
@@ -55,15 +56,17 @@ public class PathFindingManager : MonoBehaviour
 
              }
         }
-        
-        
     }
 
     public List<GridPosition> FindPath(GridPosition startGridPosition, GridPosition endGridPosition, out int pathLength)
     {
+         //Debug.Log(gridSystem.GetHeight());
+         
         List<PathNode> openList = new List<PathNode>();
         List<PathNode> closeList = new List<PathNode>();
 
+       
+        
         PathNode startNode = gridSystem.GetGridObject(startGridPosition).GetPathNode();
         PathNode endNode = gridSystem.GetGridObject(endGridPosition).GetPathNode();
         openList.Add(startNode);
