@@ -46,7 +46,7 @@ public class InputManager : MonoBehaviour
         
     }
     
-    public bool IsMouse1ButtonDownThisFrame()
+    public bool IsMouseButton1DownThisFrame()
     {
 #if USE_NEW_INPUT_STSTEM
         return playerInputActions.Player.Click1.WasPressedThisFrame();

@@ -66,14 +66,15 @@ public class LevelGrid : MonoBehaviour
     public void AddUnitAtGridPosition(GridPosition gridPosition,Unit unit)
     {
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
+        //gridObject.GetPathNode().SetIsWalkable(false);
         gridObject.AddUnit(unit);
-        //Debug.Log(gridObject.GetUnitList());
     }
     
     public void RemoveUnitAtPosition(GridPosition gridPosition , Unit unit)
     {
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
         //Debug.Log(unit);
+        //gridObject.GetPathNode().SetIsWalkable(true);
         gridObject.RemoveUnit(unit);
     }
     

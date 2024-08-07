@@ -10,6 +10,8 @@ public class UnitManager : MonoBehaviour
     [SerializeField]private List<Unit> unitList;
     [SerializeField]private List<Unit> friendlyUnitList;
     [SerializeField]private List<Unit> enemyUnitList;
+    [SerializeField]private List<Unit> selectedUnitList;
+   
 
 
     private void Awake()
@@ -26,20 +28,48 @@ public class UnitManager : MonoBehaviour
         unitList = new List<Unit>();
         friendlyUnitList = new List<Unit>();
         enemyUnitList = new List<Unit>();
+        selectedUnitList = new List<Unit>();
+
     }
 
     private void Start()
     {
         Unit.OnAnyUnitDead += Unit_OnAnyUnitDead;
         Unit.OnAnyUnitSpawned += Unit_OnAnyUnitSpawned;
+        Unit.OnAnyUnitSelectedChanged += Unit_OnAnyUnitSelectedChanged;
 
     }
-    
+
+    private void Unit_OnAnyUnitSelectedChanged(object sender, EventArgs e)
+    {
+        Unit unit = sender as Unit;
+
+        if (unit.IsSelected())
+        {
+            selectedUnitList.Add(unit);
+        }
+        else
+        {
+            selectedUnitList.Remove(unit);
+        }
+        
+        
+        
+    }
+
+
     private void Unit_OnAnyUnitSpawned(object sender, EventArgs e)
     {
         Unit unit = sender as Unit;
         unitList.Add(unit);
-       
+        if (unit != null && unit.IsEnemy())
+        {
+            enemyUnitList.Add(unit);
+        }
+        else
+        {
+            friendlyUnitList.Add(unit);
+        }
     }
     
     
@@ -48,6 +78,14 @@ public class UnitManager : MonoBehaviour
     {
         Unit unit = sender as Unit;
         unitList.Remove(unit);
+        if (unit.IsEnemy())
+        {
+            enemyUnitList.Remove(unit);
+        }
+        else
+        {
+            friendlyUnitList.Remove(unit);
+        }
         
     }
 
@@ -63,6 +101,11 @@ public class UnitManager : MonoBehaviour
     public List<Unit> GetEnemyUnitList()
     {
         return enemyUnitList;
+    }
+    
+    public List<Unit> GetSelectedList()
+    {
+        return selectedUnitList;
     }
 
     

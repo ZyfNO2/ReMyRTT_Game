@@ -6,16 +6,18 @@ public class Unit : MonoBehaviour
 {
     public static event EventHandler OnAnyUnitDead;
     public static event EventHandler OnAnyUnitSpawned;
-    public static event EventHandler OnAnyActionPointsChanged;
+    public  event EventHandler OnThisUnitSelectionChanged;
+    public static event EventHandler OnAnyUnitSelectedChanged;
     
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField]private bool isSelected;
+    [SerializeField]private bool isSelected = false;
     [SerializeField] private bool isEnemy = false;
-    [SerializeField]private int actionPoints = 9;
-    
+
+    [SerializeField] private UnitMove unitMove;
     
     private GridPosition gridPosition;
     private UnitHealth unitHealth;
+    
     
     
     private void Awake()
@@ -57,29 +59,23 @@ public class Unit : MonoBehaviour
         return gridPosition;
     }
     
-    public int GetActionPoints()
-    {
-        return actionPoints;
-    }
-    
-
-    
-
     public bool IsSelected()
     {
+       
         return isSelected;
     }
 
     public void SetIsSelected(bool isSelected)
     {
         this.isSelected = isSelected;
+        OnThisUnitSelectionChanged?.Invoke(this,EventArgs.Empty);
+        OnAnyUnitSelectedChanged?.Invoke(this,EventArgs.Empty);
     }
-    
-
     
     public Vector3 GetWorldPosition()
     {
         return transform.position;
+        
     }
     
     private void HealthSystem_OnDead(object sender, EventArgs e)
@@ -90,8 +86,7 @@ public class Unit : MonoBehaviour
         
         OnAnyUnitDead?.Invoke(this,EventArgs.Empty);
     }
-
-
+    
     public void Damage(int damageAmount)
     {
         unitHealth.Damage(damageAmount);
@@ -102,15 +97,15 @@ public class Unit : MonoBehaviour
         return isEnemy;
     }
     
-    
-    
-
     private void OnDestroy()
     {
         unitHealth.OnDead -= HealthSystem_OnDead;
     }
-    
-    
+
+    public UnitMove GetUnitMove()
+    {
+        return unitMove;
+    }
     
     
     

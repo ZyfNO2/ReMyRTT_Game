@@ -29,7 +29,7 @@ public class PathFindingManager : MonoBehaviour
     private void Start()
     {
         gridSystem = LevelGrid.Instance.GetGridSystem();
-        Debug.Log(gridSystem.GetWidth());
+
     }
 
     public void SetUp(int width,int height,float cellSize)
